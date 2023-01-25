@@ -15,19 +15,19 @@ var active := false setget set_active
 
 signal state_changed(current_state)
 
-func _ready() -> void:
+func _ready():
     for state in get_children():
         state.connect("finished", self, "_change_state")
     initialize(start_state)
 
-func initialize(state: NodePath) -> void:
+func initialize(state: NodePath):
     set_active(true)
     states_stack = []
     states_stack.push_front(get_node(state))
     current_state = states_stack[0]
     current_state._enter()
 
-func set_active(value: bool) -> void:
+func set_active(value: bool):
     active = value
     set_physics_process(value)
     set_process_input(value)
@@ -35,18 +35,18 @@ func set_active(value: bool) -> void:
         states_stack = []
         current_state = null
 
-func _unhandled_input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent):
     if current_state:
         current_state._handle_input(event)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta: float):
     current_state._update(delta)
 
-func _on_animation_finished(anim_name: String) -> void:
+func _on_animation_finished(anim_name: String):
     if active:
         current_state._on_animation_finished(anim_name)
 
-func _change_state(state_name: String) -> void:
+func _change_state(state_name: String):
     if not active:
         return
         

@@ -15,7 +15,7 @@ var _can_exit: bool
 var _was_in_front_of_wall: bool
 var _cancel_on_next_frame: bool
 
-func _enter() -> void:
+func _enter():
     if owner.stopper_ray_cast.is_colliding():
         _was_in_front_of_wall = true
         _cancel_on_next_frame = true
@@ -41,7 +41,7 @@ func _enter() -> void:
     _slide_dust.flip_h = sprite.flip_h
     _slide_dust_anim.play("dust")
 
-func _handle_command(command: String) -> void:
+func _handle_command(command: String):
     if (command == "jump"
         and _can_exit
         and _frame_count >= LOCKED_FRAME_COUNT
@@ -52,7 +52,7 @@ func _handle_command(command: String) -> void:
     if command.begins_with("weapon_"):
         weapons.change_weapon(command)
 
-func _exit() -> void:
+func _exit():
     if _was_in_front_of_wall:
         return
 
@@ -62,7 +62,7 @@ func _exit() -> void:
     _collision_shape.shape.extents.y *= 2
     _collision_shape.position.y -= 6
 
-func _update(delta: float) -> void:
+func _update(delta: float):
     if _cancel_on_next_frame:
         emit_signal("finished", "idle")
         return

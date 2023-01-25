@@ -6,11 +6,11 @@ var distance_traveled: float
 
 onready var _inputs: InputHandler = $"../../Inputs"
 
-func _enter() -> void:
+func _enter():
     $"../../EnemyAnimations".play("move")
     distance_traveled = 0
 
-func _update(delta: float) -> void:
+func _update(delta: float):
     distance_traveled += VELOCITY * delta
     owner.move_and_slide(_inputs.get_input_direction() * VELOCITY)
 

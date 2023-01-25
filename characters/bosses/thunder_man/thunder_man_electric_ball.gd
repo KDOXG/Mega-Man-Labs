@@ -8,12 +8,12 @@ var direction := Vector2.RIGHT
 
 onready var _area := $Area2D
 
-func _ready() -> void:
+func _ready():
     $Timer.connect("timeout", self, "_on_timeout")
     $AnimationPlayer.play("pulse")
     _velocity = Vector2(direction.x * speed, Vector2.DOWN.y * Constants.GRAVITY)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta: float):
     _velocity.y += Constants.GRAVITY
     _velocity = move_and_slide(_velocity)
 
@@ -21,5 +21,5 @@ func _physics_process(delta: float) -> void:
         if body is Player:
             body.on_hit(damage)
 
-func _on_timeout() -> void:
+func _on_timeout():
     queue_free()

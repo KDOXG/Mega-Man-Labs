@@ -7,18 +7,18 @@ export(int) var size_in_tiles := 3 setget _set_size
 
 var _players: Array = []
 
-func _ready() -> void:
+func _ready():
     set_physics_process(false)
     $Ladder.connect("body_entered", self, "_on_body_entered")
     $Ladder.connect("body_exited", self, "_on_body_exited")
 
-func _on_body_entered(body: PhysicsBody2D) -> void:
+func _on_body_entered(body: PhysicsBody2D):
     if body is Player:
         _players.append(body as Player)
         _players.back().ladder = self
         set_physics_process(true)
 
-func _on_body_exited(body: PhysicsBody2D) -> void:
+func _on_body_exited(body: PhysicsBody2D):
     var index: int = _players.find(body)
     if index == -1:
         return
@@ -36,7 +36,7 @@ func _on_body_exited(body: PhysicsBody2D) -> void:
     if _players.empty():
         set_physics_process(false)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta: float):
     for player in _players:
         if not player.is_climbing and not player.is_sliding and \
                 player.get_node("StateMachine").current_state != player.get_node("StateMachine/Stagger") and \
@@ -47,24 +47,24 @@ func _physics_process(delta: float) -> void:
             player.climb(distance_to_center)
             _set_collidable(player, false)
 
-func is_exiting_ladder(player: Player) -> bool:
+func is_exiting_ladder(player: Player):
     if player in _players:
         return _get_distance_to_ladder_top(player) < player.get_node("CollisionShape2D").shape.extents.y + 2
     else:
         return false
 
-func _set_collidable(player: Player, value: bool) -> void:
+func _set_collidable(player: Player, value: bool):
     player.set_collision_mask_bit(6, value)
 
-func _is_above_ladder(player: Player) -> bool:
+func _is_above_ladder(player: Player):
     return _get_distance_to_ladder_top(player) < 0
 
-func _get_distance_to_ladder_top(player: Player) -> float:
+func _get_distance_to_ladder_top(player: Player):
     return player.get_node("CollisionShape2D").global_position.y - \
         $CollisionSegment.global_position.y + \
         player.get_node("CollisionShape2D").shape.extents.y
 
-func _set_size(value: int) -> void:
+func _set_size(value: int):
     if not has_node("Ladder"):
         return
     

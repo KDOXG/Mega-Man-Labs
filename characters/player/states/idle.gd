@@ -6,12 +6,12 @@ export(Vector2) var buster_position := Vector2(21, 0)
 
 var _frame_count: int
 
-func _enter() -> void:
+func _enter():
     animation_player.play("idle")
     mega_buster.position = buster_position
     _frame_count = -1
 
-func _handle_command(command: String) -> void:
+func _handle_command(command: String):
     ._handle_command(command)
     
     if command == "shoot":
@@ -23,7 +23,7 @@ func _handle_command(command: String) -> void:
     if command.begins_with("weapon_"):
         weapons.change_weapon(command)
 
-func _update(delta: float) -> void:
+func _update(delta: float):
     _frame_count += 1
     if _frame_count > STILL_FRAME_COUNT:
         owner.is_still = true
@@ -39,6 +39,6 @@ func _update(delta: float) -> void:
     if owner.charge_level > 0 and not inputs.is_action_pressed(InputHandler.Action.SHOOT):
         _handle_command("shoot")
 
-func _on_animation_finished(anim_name: String) -> void:
+func _on_animation_finished(anim_name: String):
     if anim_name.begins_with("idle_shoot"):
         animation_player.play("idle")

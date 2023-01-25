@@ -4,7 +4,7 @@ const Projectile: Resource = preload("res://characters/player/weapons/electric_b
 
 onready var mega_buster: Position2D = get_node("../../MegaBusterPos")
 
-func use() -> void:
+func use():
     var on_screen_bullets: Array = get_tree().get_nodes_in_group(
         "BusterProjectilesP%s" % owner.player_number)
 

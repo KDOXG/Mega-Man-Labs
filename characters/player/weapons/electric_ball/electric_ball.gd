@@ -5,24 +5,24 @@ export(int) var damage := 1
 var direction: Vector2
 var consumed := false
     
-func _ready() -> void:
+func _ready():
     if not $PreciseVisibilityNotifier2D.is_on_screen():
         queue_free()
     $AnimationPlayer.play("pulse")
     # $ShootSFX.play()
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta: float):
     move_and_collide(direction.normalized() * Global.get_projectile_speed() * 0.5 * delta)
 
-func reflect() -> void:
+func reflect():
     $ReflectSFX.play()
     direction = Vector2(-direction.x, -1)
     $Sprite.flip_h = !$Sprite.flip_h
 
-func on_camera_exited() -> void:
+func on_camera_exited():
     queue_free()
 
-func queue_free() -> void:
+func queue_free():
     consumed = true
     # if $ShootSFX.playing:
     #     visible = false

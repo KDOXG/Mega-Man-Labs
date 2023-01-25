@@ -19,11 +19,11 @@ var current_scene: Node = null
 onready var _game_vp: Viewport = _find_viewport_leaf(self)
 onready var _game_vpc: ViewportContainer = _game_vp.get_parent()
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta: float):
     if not Engine.editor_hint and $LabelFPS.visible:
             $LabelFPS.text = str(Engine.get_frames_per_second(), " FPS")
         
-func _ready() -> void:
+func _ready():
     if Engine.is_editor_hint():
         return
 
@@ -56,7 +56,7 @@ func _ready() -> void:
 
     switch_scene(ProjectSettings.get_setting("custom/startup/entry_game_scene"))
 
-func _unhandled_input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent):
     if event.is_action_pressed("action_screenshot"):
         Global.take_screenshot()
     if event.is_action_pressed("action_debug_filter"):
@@ -67,10 +67,10 @@ func _unhandled_input(event: InputEvent) -> void:
     if event.is_action_pressed("action_debug_fullscreen"):
         OS.window_fullscreen = !OS.window_fullscreen
 
-func switch_scene(path: String) -> void:
+func switch_scene(path: String):
     call_deferred("_deferred_switch_scene", path)
 
-func reload_current_scene() -> void:
+func reload_current_scene():
     switch_scene(_current_scene_path)
 
 func _deferred_switch_scene(path):
@@ -82,7 +82,7 @@ func _deferred_switch_scene(path):
     current_scene = new_scene.instance()
     _game_vp.add_child(current_scene)
 
-func _find_viewport_leaf(node: Node) -> Viewport:
+func _find_viewport_leaf(node: Node):
     for child_node in node.get_children():
         if child_node is Viewport and child_node.get_child_count() == 0:
             return child_node
@@ -94,7 +94,7 @@ func _find_viewport_leaf(node: Node) -> Viewport:
     print("No child Viewport node found below \'", name, "\'.")
     return null
 
-func _set_filter(filter_value: int) -> void:
+func _set_filter(filter_value: int):
     _filter = filter_value
 
     if not _game_vpc or Engine.editor_hint:
@@ -125,7 +125,7 @@ func _set_filter(filter_value: int) -> void:
             # print_debug("Setting filter to Linear.")
             _game_vpc.material = null
 
-func _on_size_changed() -> void:
+func _on_size_changed():
     var update_filter: bool = _game_vp.size != Global.base_size
     _game_vp.size = Global.base_size
 
@@ -161,7 +161,7 @@ func _on_size_changed() -> void:
         # Always needs update on size change.
         _game_vpc.material.set_shader_param("texels_per_pixel", 1.0 / _game_vpc.rect_scale.x)
 
-func _set_touch_controls() -> void:
+func _set_touch_controls():
     if (Engine.is_editor_hint() or not has_node("TouchControls")):
         return
 

@@ -5,7 +5,7 @@ var locked := false
 
 onready var _inputs: InputHandler = $"../Inputs"
 
-func _ready() -> void:
+func _ready():
     states_map = {
         "spawn": $Spawn,
         "idle": $Idle,
@@ -19,7 +19,7 @@ func _ready() -> void:
         "death": $Death
     }
 
-func _change_state(state_name: String) -> void:
+func _change_state(state_name: String):
     if not active or locked:
         return
 
@@ -38,5 +38,5 @@ func _change_state(state_name: String) -> void:
 
     ._change_state(state_name)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta: float):
     input_direction = _inputs.get_input_direction()

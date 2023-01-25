@@ -3,7 +3,7 @@ extends State
 onready var _animations: AnimationPlayer = $"../../AnimationBase"
 onready var _animations_special: AnimationPlayer = $"../../AnimationPlayer"
 
-func _enter() -> void:
+func _enter():
     $"../../CharacterSprites/AnimatedSprite".visible = true
     get_tree().paused = true
     get_tree().set_group("BossDoors", "locked", true)

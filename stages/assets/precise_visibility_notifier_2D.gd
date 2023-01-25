@@ -17,13 +17,13 @@ onready var _base_size: Vector2
 signal camera_entered()
 signal camera_exited()
 
-func _ready() -> void:
+func _ready():
     set_enabled(enabled)
     _base_size = Vector2(Global.base_size.x, Global.base_size.y)
     force_visibility_update()
     _was_on_screen = is_on_screen()
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta: float):
     force_visibility_update()
     _is_on_screen = is_on_screen()
 
@@ -34,18 +34,18 @@ func _physics_process(delta: float) -> void:
     
     _was_on_screen = _is_on_screen
 
-func is_on_screen() -> bool:
+func is_on_screen():
     _sign = 1 if _was_on_screen else -1
     _viewport_rect = _viewport_rect.grow(_sign * margin)
     return _viewport_rect.intersects(_rect)
 
-func force_visibility_update() -> void:
+func force_visibility_update():
     _viewport_rect = Rect2(-_viewport.get_canvas_transform().origin, _base_size)
     _rect = Rect2(global_position + rect.position, rect.size)
 
-func set_enabled(value: bool) -> void:
+func set_enabled(value: bool):
     set_physics_process(value)
     enabled = value
 
-func is_enabled() -> bool:
+func is_enabled():
     return is_physics_processing()

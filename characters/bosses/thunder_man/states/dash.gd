@@ -7,7 +7,7 @@ var _duration: float
 
 onready var dash_effect: Sprite = $"../../DashEffect"
 
-func _enter() -> void:
+func _enter():
     _duration = 0
     animated_sprite.play("dash")
     dash_effect.set_as_toplevel(true)
@@ -15,7 +15,7 @@ func _enter() -> void:
     dash_effect.flip_h = animated_sprite.flip_h
     $"../../AnimationEffects".play("dash_effect")
 
-func _update(delta: float) -> void:
+func _update(delta: float):
     owner.move_and_collide(owner.get_facing_direction() * dash_speed * delta)
     _duration += delta
     if _duration > dash_duration:

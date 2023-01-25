@@ -27,7 +27,7 @@ enum Action {
 var controller: int = Controller.EMPTY
 var ai: AI = AI.new()
 
-func get_input_direction() -> Vector2:
+func get_input_direction():
     if controller == Controller.EMPTY:
         return Vector2.ZERO
     elif controller == Controller.AI:
@@ -39,14 +39,14 @@ func get_input_direction() -> Vector2:
         var up := int(Global.is_action_pressed(_get_name(Action.UP)))
         return Vector2(right - left, down - up)
 
-func is_action_pressed(action: int) -> bool:
+func is_action_pressed(action: int):
     var action_name: String = _get_name(action)
     if controller == Controller.EMPTY or action_name.empty():
         return false
     else:
         return Global.is_action_pressed(action_name)
 
-func _get_name(action: int) -> String:
+func _get_name(action: int):
     match action:
         Action.UP:
             return "action_up_p%s" % controller

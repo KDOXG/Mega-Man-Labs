@@ -16,13 +16,13 @@ onready var _death_distance: float = sqrt(pow(_base_width, 2) + pow(_base_height
 signal transition_start()
 signal transition_end()
 
-func _ready() -> void:
+func _ready():
     _camera_target = get_node(player_target_node) as Node2D
     global_position = _get_target_pos()
     _set_multiplayer_boundaries_dimensions()
     _boundaries_collision_mask = $MultiplayerBoundaries.collision_mask
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta: float):
     for p in Global.players.values():
         if p.global_position.distance_to(get_camera_screen_center()) > _death_distance:
             p.die(false)
@@ -31,7 +31,7 @@ func _physics_process(delta: float) -> void:
         global_position = _get_target_pos()
         $MultiplayerBoundaries.global_position = get_camera_screen_center()
 
-func transition_section(section: Section) -> void:
+func transition_section(section: Section):
     emit_signal("transition_start")
     get_tree().paused = true
     set_physics_process(false)
@@ -103,7 +103,7 @@ func transition_section(section: Section) -> void:
     set_physics_process(true)
     emit_signal("transition_end")
 
-func on_restarted() -> void:
+func on_restarted():
     for p in Global.players.values():
         if not is_connected("transition_start", p, "on_camera_transition_start"):
             connect("transition_start", p, "on_camera_transition_start")
@@ -112,11 +112,11 @@ func on_restarted() -> void:
     
     global_position = _get_target_pos()
 
-func on_died() -> void:
+func on_died():
     if Global.players_alive_count > 0:
         _switching_target = true
 
-func on_death_freeze_finished(dead_player: Node2D) -> void:
+func on_death_freeze_finished(dead_player: Node2D):
     if Global.players_alive_count < 1:
         return
     elif Global.players_alive_count == 1:
@@ -141,7 +141,7 @@ func on_death_freeze_finished(dead_player: Node2D) -> void:
     $MultiplayerBoundaries.collision_mask = _boundaries_collision_mask
     _switching_target = false
 
-func _get_target_pos() -> Vector2:
+func _get_target_pos():
     if Global.players_alive_count > 1:
         # There are no min/max constants. 1e6 is just a substitute for that.
         var most_left_pos: float = 1e6
@@ -159,7 +159,7 @@ func _get_target_pos() -> Vector2:
     else:
         return _camera_target.global_position
 
-func _set_multiplayer_boundaries_dimensions() -> void:
+func _set_multiplayer_boundaries_dimensions():
     var offset: int = 8
     var width: int = 4
     var x: float = Global.base_size.x
@@ -177,7 +177,7 @@ func _set_multiplayer_boundaries_dimensions() -> void:
     $MultiplayerBoundaries/CollisionShapeRight.shape.extents.y = y / 2
     $MultiplayerBoundaries/CollisionShapeRight.position.x = x / 2 + offset
 
-func _set_active_section(value: Section) -> void:
+func _set_active_section(value: Section):
     if active_section:
         active_section.active = false
 
@@ -191,7 +191,7 @@ func _set_active_section(value: Section) -> void:
     update_limits()
     # print("New Active Section: ", value.name)
 
-func update_limits() -> void:
+func update_limits():
     limit_left = active_section.limit_left
     limit_top = active_section.limit_top
     limit_right = active_section.limit_right

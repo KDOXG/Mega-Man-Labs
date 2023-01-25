@@ -2,18 +2,18 @@ extends "common.gd"
 
 onready var _timer_idle_delay: Timer = $"../../TimerIdleDelay"
 
-func _ready() -> void:
+func _ready():
     _timer_idle_delay.connect("timeout", self, "_on_timeout")
 
-func _enter() -> void:
+func _enter():
     owner.face_player()
     animated_sprite.play("idle")
     _timer_idle_delay.start()
 
-func _update(delta: float) -> void:
+func _update(delta: float):
     owner.move_and_slide(Vector2.DOWN * Constants.GRAVITY, Constants.FLOOR_NORMAL)
 
-func _on_timeout() -> void:
+func _on_timeout():
     _ray_cast.cast_to = owner.get_facing_direction() * _ray_cast_length
     _ray_cast.force_raycast_update()
     if _ray_cast.is_colliding():

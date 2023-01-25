@@ -8,7 +8,7 @@ var effects_node: Node
 
 signal energy_particles_vanished()
 
-func _ready() -> void:
+func _ready():
     $Timer.connect("timeout", self, "_on_timeout")
     var node_name := "SpawnedEffects"
     if not get_viewport().has_node(node_name):
@@ -18,7 +18,7 @@ func _ready() -> void:
     else:
         effects_node = get_viewport().get_node(node_name)
 
-func spawn_death_particles(spawn_pos: Vector2 = global_position) -> void:
+func spawn_death_particles(spawn_pos: Vector2 = global_position):
     var death_particle: Node2D
     for i in range(8):
         death_particle = DeathParticle.instance()
@@ -31,7 +31,7 @@ func spawn_death_particles(spawn_pos: Vector2 = global_position) -> void:
             spawn_pos, Vector2(1, 0).rotated(i * PI / 4), DEATH_PARTICLE_VELOCITY * 2)
         effects_node.call_deferred("add_child", death_particle)
 
-func spawn_energy_particles(spawn_pos: Vector2 = global_position) -> void:
+func spawn_energy_particles(spawn_pos: Vector2 = global_position):
     $"SFX/Energy".play()
     var lifetime: float = $"SFX/Energy".stream.get_length()
     var distance: float = 200.0
@@ -53,5 +53,5 @@ func spawn_energy_particles(spawn_pos: Vector2 = global_position) -> void:
                 -Vector2(1, 0).rotated(i * PI / 4), distance / lifetime)
         effects_node.call_deferred("add_child", energy_particle)
 
-func _on_timeout() -> void:
+func _on_timeout():
     emit_signal("energy_particles_vanished")

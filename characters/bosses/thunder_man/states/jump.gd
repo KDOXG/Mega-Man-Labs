@@ -3,11 +3,11 @@ extends "common.gd"
 export(int) var jump_speed := -285
 export(int) var horizontal_speed := 70
 
-func _enter() -> void:
+func _enter():
     animated_sprite.play("jump")
     velocity.y = jump_speed
 
-func _update(delta: float) -> void:
+func _update(delta: float):
     velocity.x = owner.get_facing_direction().x * horizontal_speed
     velocity.y = clamp(velocity.y + Constants.GRAVITY, -Constants.FALL_SPEED_MAX, Constants.FALL_SPEED_MAX)
     owner.move_and_slide(velocity, Constants.FLOOR_NORMAL)

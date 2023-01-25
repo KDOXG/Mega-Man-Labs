@@ -8,10 +8,10 @@ onready var _animation_player := _player.get_node("AnimationPlayer")
 onready var _effect_spawner := _player.get_node("EffectSpawner")
 onready var _inputs := _player.get_node("Inputs")
 
-func _ready() -> void:
+func _ready():
     set_physics_process(false)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta: float):
     var distance_to_center: Vector2 = _get_distance_to_center()
     if abs(distance_to_center.x) < 2:
         _state_machine.input_direction = Vector2()
@@ -26,11 +26,11 @@ func _physics_process(delta: float) -> void:
 
     _distance_last_frame = distance_to_center
 
-func start() -> void:
+func start():
     set_physics_process(true)
     _state_machine.input_direction = Vector2(sign(_get_distance_to_center().x), 0)
 
-func _exit() -> void:
+func _exit():
     _effect_spawner.spawn_energy_particles()
     yield(_effect_spawner, "energy_particles_vanished")
     _effect_spawner.spawn_energy_particles()
@@ -43,5 +43,5 @@ func _exit() -> void:
     yield(get_tree().create_timer(1.0), "timeout")
     owner.emit_signal("exited")
 
-func _get_distance_to_center() -> Vector2:
+func _get_distance_to_center():
     return Global.current_stage.current_camera.get_camera_screen_center() - _player.global_position

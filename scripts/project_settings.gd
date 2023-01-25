@@ -1,11 +1,11 @@
 tool
 extends Node
 
-func _ready() -> void:
+func _ready():
     _init_custom_project_settings()
 
 # Initializes project settings custom properties.
-func _init_custom_project_settings() -> void:
+func _init_custom_project_settings():
     
     if not ProjectSettings.has_setting("custom/startup/entry_game_scene"):
         ProjectSettings.set_setting("custom/startup/entry_game_scene", "res://menus/TitleScreen.tscn")

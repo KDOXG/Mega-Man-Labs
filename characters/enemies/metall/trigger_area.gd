@@ -5,7 +5,7 @@ var is_shot_ready := true
 
 onready var _timer: Timer = $"../Timer"
 
-func on_body_entered(body: PhysicsBody2D) -> void:
+func on_body_entered(body: PhysicsBody2D):
     if body is Player:
         player = body as Player
         if is_shot_ready:
@@ -13,6 +13,6 @@ func on_body_entered(body: PhysicsBody2D) -> void:
             _timer.call_deferred("emit_signal", "timeout")
             _timer.start()    # Reset timer
 
-func on_body_exited(body: PhysicsBody2D) -> void:
+func on_body_exited(body: PhysicsBody2D):
     if body is Player:
         player = null

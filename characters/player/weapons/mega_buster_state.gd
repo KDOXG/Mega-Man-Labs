@@ -6,23 +6,23 @@ const ProjectileCharged2: Resource = preload("MegaBusterCharged2.tscn")
 
 onready var mega_buster: Position2D = get_node("../../MegaBusterPos")
 
-func _ready() -> void:
+func _ready():
     can_power_charge = true
 
-func _get_weapon_energy() -> int:
+func _get_weapon_energy():
     return owner.hit_points
 
-func _enter() -> void:
+func _enter():
     owner.reset_color()
     owner.emit_signal("weapon_changed", 0, Color.transparent)
 
-func _deplete_energy() -> bool:
+func _deplete_energy():
     return true  # Cannot deplete mega buster.
 
-func charge_energy(amount: int) -> void:
+func charge_energy(amount: int):
     pass  # Cannot charge mega buster.
 
-func use() -> void:
+func use():
     var on_screen_bullets: Array = get_tree().get_nodes_in_group(
         "BusterProjectilesP%s" % owner.player_number)
 
@@ -34,7 +34,7 @@ func use() -> void:
         mega_buster.position.x = abs(mega_buster.position.x) * owner.get_facing_direction().x
         owner.get_parent().add_child(_get_bullet())
 
-func _get_bullet() -> Node:
+func _get_bullet():
     var bullet: Node
     match owner.charge_level:
         0:

@@ -1,6 +1,6 @@
 extends AI
 
-func _get_input_direction() -> Vector2:
+func _get_input_direction():
     if Global.player:
         return owner.global_position.direction_to(Global.player.global_position)
     else:

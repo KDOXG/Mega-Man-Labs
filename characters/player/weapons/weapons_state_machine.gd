@@ -1,9 +1,9 @@
 extends StateMachine
 
-func _ready() -> void:
+func _ready():
     _init_states_map()
 
-func change_weapon(name: String) -> void:
+func change_weapon(name: String):
     # Mega Buster (+ 1) is not included in unlocked weapons.
     if states_map.size() != GameState.unlocked_weapons.size() + 1:
         _init_states_map()
@@ -17,7 +17,7 @@ func change_weapon(name: String) -> void:
     else:
         printerr("Failed to change weapon. %s is not a valid weapon name." % name)
 
-func get_weapons_info() -> Dictionary:
+func get_weapons_info():
     var weapons_info := {}
     for key in states_map.keys():
         if "weapon_energy" in states_map[key] and "color_primary" in states_map[key]:
@@ -25,7 +25,7 @@ func get_weapons_info() -> Dictionary:
 
     return weapons_info
 
-func _get_adjacent_key(previous: bool = false) -> String:
+func _get_adjacent_key(previous: bool = false):
     var keys: Array = states_map.keys()
     var current_key: String
 
@@ -45,7 +45,7 @@ func _get_adjacent_key(previous: bool = false) -> String:
 
     return keys[adjacent_index]
 
-func _init_states_map() -> void:
+func _init_states_map():
     states_map.clear()
     states_map["mega_buster"] = $MegaBuster
 

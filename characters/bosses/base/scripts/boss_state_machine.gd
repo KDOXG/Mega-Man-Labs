@@ -1,6 +1,6 @@
 extends StateMachine
 
-func _ready() -> void:
+func _ready():
     set_process_unhandled_input(false)
     states_map = {
         "death": $Death,
@@ -10,7 +10,7 @@ func _ready() -> void:
         "jump": $Jump
     }
 
-func _change_state(state_name: String) -> void:
+func _change_state(state_name: String):
     if current_state == $Death and owner.is_dead:
         return
     ._change_state(state_name)

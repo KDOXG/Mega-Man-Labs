@@ -2,18 +2,18 @@ extends State
 
 onready var _trigger_area = $"../../TriggerArea"
 
-func _enter() -> void:
+func _enter():
     owner.is_blocking = true
     $"../../EnemyAnimations".play("idle")
 
-func _update(delta: float) -> void:
+func _update(delta: float):
     get_parent().velocity.y = \
         clamp(get_parent().velocity.y + Constants.GRAVITY, -Constants.FALL_SPEED_MAX, Constants.FALL_SPEED_MAX)
     owner.move_and_slide(get_parent().velocity, Constants.FLOOR_NORMAL)
     if owner.is_on_floor():
         get_parent().velocity = Vector2.ZERO
 
-func on_Timer_timeout() -> void:
+func on_Timer_timeout():
     if _trigger_area.player:
         # Change facing direction if necessary
         var vector_to_player: Vector2 = _trigger_area.player.global_position - $"../../HitBox".global_position

@@ -8,17 +8,17 @@ class_name State
 
 signal finished(next_state_name)
 
-func _enter() -> void:
+func _enter():
     return
 
-func _exit() -> void:
+func _exit():
     return
 
-func _handle_input(event: InputEvent) -> void:
+func _handle_input(event: InputEvent):
     return
 
-func _update(delta: float) -> void:
+func _update(delta: float):
     return
 
-func _on_animation_finished(anim_name: String) -> void:
+func _on_animation_finished(anim_name: String):
     return

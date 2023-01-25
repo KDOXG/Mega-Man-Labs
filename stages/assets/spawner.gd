@@ -10,7 +10,7 @@ var spawn_info := {}
 
 onready var _spawn_ref: Resource
 
-func _ready() -> void:
+func _ready():
     if packed_scene_ref:
         _spawn_ref = load(packed_scene_ref.get_path())
 
@@ -19,21 +19,21 @@ func _ready() -> void:
     if spawn_timer > 0.0:
         $Timer.connect("timeout", self, "_on_timeout")
 
-func on_camera_entered() -> void:
+func on_camera_entered():
     _spawn_enemy()
     if spawn_timer > 0.0:
         $Timer.start(spawn_timer)
 
-func on_queued_free(enemy_name: String) -> void:
+func on_queued_free(enemy_name: String):
         GameState.decrease_enemy_count(enemy_name)
         _can_respawn = true
 
-func set_packed_scene_ref(value: PackedScene) -> void:
+func set_packed_scene_ref(value: PackedScene):
     packed_scene_ref = value
     if Engine.editor_hint and packed_scene_ref:
         add_child((load(packed_scene_ref.get_path()).instance()).get_node("Sprite").duplicate())
 
-func _spawn_enemy() -> void:
+func _spawn_enemy():
     if spawn_count_max < 0 and not _can_respawn:
         return
 

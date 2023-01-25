@@ -11,7 +11,7 @@ export(String) var stage_bottom_right
 
 var _buttons: Array
 
-func _ready() -> void:
+func _ready():
     $FadeEffects.margin_left = -Global.get_base_size().x
     $FadeEffects.margin_top = -Global.get_base_size().x
     $FadeEffects.margin_right = Global.get_base_size().x
@@ -32,7 +32,7 @@ func _ready() -> void:
         button.connect("pressed", self, "_on_pressed", [index])
         index += 1
 
-func _on_focus_entered(index: int, is_mouse: bool) -> void:
+func _on_focus_entered(index: int, is_mouse: bool):
     if is_mouse:
         if _buttons[index].has_focus():
             return
@@ -42,7 +42,7 @@ func _on_focus_entered(index: int, is_mouse: bool) -> void:
     $MoveCursorSound.play()
     $"Mugshots/MugshotMidCenter".frame = index
 
-func _on_pressed(index: int) -> void:
+func _on_pressed(index: int):
     var path: String
     match index:
         0:

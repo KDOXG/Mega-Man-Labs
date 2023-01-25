@@ -3,15 +3,15 @@ extends "res://characters/enemies/base/enemy_base.gd"
 
 export(int) var max_distance := 192
 
-func _ready() -> void:
+func _ready():
     $Inputs.controller = InputHandler.Controller.AI
     $Inputs.ai = $AI
 
-func _replace_with_spawner() -> void:
+func _replace_with_spawner():
     spawn_info["max_distance"] = max_distance
     ._replace_with_spawner()
 
-func _on_hit(body: PhysicsBody2D) -> void:
+func _on_hit(body: PhysicsBody2D):
     if body and body.is_in_group("PlayerWeapons"):
         is_blocking = get_facing_direction().x != body.direction.x
     ._on_hit(body)

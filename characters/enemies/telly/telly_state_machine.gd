@@ -1,4 +1,4 @@
 extends "res://characters/enemies/base/scripts/enemy_state_machine.gd"
 
-func _ready() -> void:
+func _ready():
     states_map["move"] = $Move

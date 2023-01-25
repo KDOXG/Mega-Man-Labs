@@ -26,7 +26,7 @@ onready var _start_pos: Vector2 = position
 signal change_state(state_name)
 signal queued_free()
 
-func _ready() -> void:
+func _ready():
     connect("change_state", $StateMachine, "_change_state")
     if has_node("HitBox"):
         _player_collision_area = $HitBox
@@ -34,7 +34,7 @@ func _ready() -> void:
     _hit_points = hit_points_max
     add_to_group("Enemies")
 
-func _replace_with_spawner() -> void:
+func _replace_with_spawner():
     spawn_info["flip_direction"] = flip_direction
 
     if not can_respawn:
@@ -49,13 +49,13 @@ func _replace_with_spawner() -> void:
     get_parent().add_child(spawner)
     queue_free()
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta: float):
     if _player_collision_area:
         for body in _player_collision_area.get_overlapping_bodies():
             if body is Player and _is_collidable:
                 body.on_hit(contact_damage)
 
-func _on_hit(body: PhysicsBody2D) -> void:
+func _on_hit(body: PhysicsBody2D):
     if body and body.is_in_group("PlayerWeapons"):
         if "consumed" in body and body.consumed:
             return
@@ -69,12 +69,12 @@ func _on_hit(body: PhysicsBody2D) -> void:
             _animations.play("blink")
             _take_damage(buster_damage)
 
-func _take_damage(damage: int) -> void:
+func _take_damage(damage: int):
     _hit_points -= damage
     if _hit_points < 1:
         _die()
 
-func _die() -> void:
+func _die():
     is_dead = true
     _is_collidable = false  # Player can no longer collide with enemy.
     if _player_collision_area:
@@ -82,26 +82,26 @@ func _die() -> void:
         _player_collision_area.set_collision_layer_bit(2, false)
     emit_signal("change_state", "death")
 
-func toggle_flip_h() -> void:
+func toggle_flip_h():
     $Sprite.flip_h = !$Sprite.flip_h
 
-func set_flip_direction(value: bool) -> void:
+func set_flip_direction(value: bool):
     $Sprite.flip_h = value
     flip_direction = value
 
-func get_facing_direction() -> Vector2:
+func get_facing_direction():
     return Vector2.RIGHT if $Sprite.flip_h else Vector2.LEFT
 
-func on_camera_exited() -> void:
+func on_camera_exited():
     queue_free()
 
-func start_yield_timer(time: float) -> Timer:
+func start_yield_timer(time: float):
     _timer = Timer.new()
     add_child(_timer)
     _timer.start(time)
     return _timer
 
-func queue_free() -> void:
+func queue_free():
     emit_signal("queued_free")
     if _timer and _timer.time_left > 0:
         yield(_timer, "timeout")

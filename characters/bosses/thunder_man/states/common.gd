@@ -13,22 +13,22 @@ onready var timer_cooldown: Timer = $"../../TimerCooldown"
 onready var animated_sprite: AnimatedSprite = $"../../CharacterSprites/AnimatedSprite"
 onready var effects: AnimationPlayer = $"../../AnimationEffects"
 
-func _handle_input(event: InputEvent) -> void:
+func _handle_input(event: InputEvent):
     if event.is_action_pressed("action_debug_01"):
         pass
 
-func _on_animation_finished(anim_name: String) -> void:
+func _on_animation_finished(anim_name: String):
     if anim_name == "hit":
         owner.is_invincible = false
 
-func jump() -> void:
+func jump():
     if owner.is_on_floor() and timer_cooldown.is_stopped():
         timer_cooldown.start(COOLDOWN + randf() * 0.6)
         emit_signal("finished", "jump")
     else:
         emit_signal("finished", "idle")
 
-func shoot() -> void:
+func shoot():
     var electric_ball := ElectricBall.instance()
     _shoot_pos.position.x = abs(_shoot_pos.position.x) * owner.get_facing_direction().x
     electric_ball.direction = owner.get_facing_direction()

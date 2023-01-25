@@ -8,7 +8,7 @@ var disappears := false
 var _velocity: Vector2
 var _start_pos: Vector2
 
-func _ready() -> void:
+func _ready():
     _start_pos = global_position
     $PreciseVisibilityNotifier2D.enabled = !persistent
 
@@ -26,16 +26,16 @@ func _ready() -> void:
         $AnimationBase.connect("animation_finished", self, "_on_anim_finished")
         $AnimationBase.play("disappear")
     
-func on_restarted() -> void:
+func on_restarted():
     _velocity = Vector2()
     global_position = _start_pos
     visible = true
     $Area2D.set_deferred("monitoring", true)
 
-func on_camera_exited() -> void:
+func on_camera_exited():
     queue_free()
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta: float):
     _velocity.x = 0
     _velocity.y = clamp(
         _velocity.y + Constants.GRAVITY, -Constants.FALL_SPEED_MAX, Constants.FALL_SPEED_MAX)
@@ -43,7 +43,7 @@ func _physics_process(delta: float) -> void:
     if is_on_floor():
         _velocity = Vector2.ZERO
     
-func on_body_entered(body: PhysicsBody2D) -> void:
+func on_body_entered(body: PhysicsBody2D):
     if body is Player:
         _on_picked_up_effect(body as Player)
         visible = false
@@ -53,9 +53,9 @@ func on_body_entered(body: PhysicsBody2D) -> void:
             queue_free()
 
 # Virutal method. Override in actual item for desired effect.
-func _on_picked_up_effect(body: Player) -> void:
+func _on_picked_up_effect(body: Player):
     pass
 
-func _on_anim_finished(anim_name: String) -> void:
+func _on_anim_finished(anim_name: String):
     if anim_name == "disappear":
         queue_free()

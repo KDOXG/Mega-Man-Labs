@@ -24,7 +24,7 @@ var _players_ready_count := 0
 
 signal transition_entered(transition)
 
-func _ready() -> void:
+func _ready():
     if Engine.editor_hint:
         return
 
@@ -39,7 +39,7 @@ func _ready() -> void:
     $Area2D.connect("body_entered", self, "on_body_entered")
     $Area2D.connect("body_exited", self, "_on_body_exited")
 
-func on_body_entered(body: Node) -> void:
+func on_body_entered(body: Node):
     if not body is Player or active:
         return
 
@@ -64,7 +64,7 @@ func on_body_entered(body: Node) -> void:
 
     emit_signal("transition_entered", self)
 
-func _on_body_exited(body: Node) -> void:
+func _on_body_exited(body: Node):
     if not body is Player:
         return
 
@@ -73,24 +73,24 @@ func _on_body_exited(body: Node) -> void:
 
     # print(body.name, " exited ", name, " at ", to_local(body.global_position).round())
 
-func on_restarted() -> void:
+func on_restarted():
     _reset_players_ready_count()
     if _can_seal_previous:
         seal_previous_section = true
     if sealed and _remove_seal_on_restart:
         _seal(false)
 
-func on_checkpoint_reached() -> void:
+func on_checkpoint_reached():
     if sealed:
         _remove_seal_on_restart = false
 
-func _seal(value: bool) -> void:
+func _seal(value: bool):
     sealed = value
     $BlockingWall.set_collision_mask_bit(1, sealed)
     $BlockingWall.set_collision_layer_bit(7, sealed)
     $Area2D.set_collision_mask_bit(1, !sealed)
 
-func _update_direction(previous_section: Section) -> void:
+func _update_direction(previous_section: Section):
     transition_dir = Vector2.ZERO
     var is_vertical: bool = true
 
@@ -112,15 +112,15 @@ func _update_direction(previous_section: Section) -> void:
             transition_dir = Vector2.LEFT
             # print("Transition Direction: LEFT")
 
-func _set_width(value: int) -> void:
+func _set_width(value: int):
     width = value
     _update_size()
 
-func _set_height(value: int) -> void:
+func _set_height(value: int):
     height = value
     _update_size()
 
-func _update_size() -> void:
+func _update_size():
     var extents := Vector2(width / 2, height / 2)
     $"Area2D/CollisionShape2D".shape.extents = extents
     $"Area2D/CollisionShape2D".position = extents
@@ -128,20 +128,20 @@ func _update_size() -> void:
     $"BlockingWall/CollisionShape2D".position = extents
     $DebugRect.update()
 
-func _reset_players_ready_count() -> void:
+func _reset_players_ready_count():
     _players_ready_count = 0
 
-func _increment_players_ready_count() -> void:
+func _increment_players_ready_count():
     _players_ready_count = clamp(_players_ready_count + 1, 0, Global.players_alive_count)
 
-func _decrement_players_ready_count() -> void:
+func _decrement_players_ready_count():
     _players_ready_count = clamp(_players_ready_count - 1, 0, Global.players_alive_count)
 
-func _all_players_ready() -> bool:
+func _all_players_ready():
     if _players_ready_count > Global.players_alive_count:
         _players_ready_count = Global.players_alive_count
     return _players_ready_count == Global.players_alive_count
 
 # Returns global position of section center.
-func get_section_center() -> Vector2:
+func get_section_center():
     return Vector2(limit_left + limit_right / 2, limit_top + limit_bottom / 2)

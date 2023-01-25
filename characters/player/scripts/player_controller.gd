@@ -38,7 +38,7 @@ signal died()
 signal death_freeze_finished()
 signal exited()
 
-func _ready() -> void:
+func _ready():
     connect("change_state", $StateMachine, "_change_state")
 
     match player_number:
@@ -49,7 +49,7 @@ func _ready() -> void:
 
     input_controller = $Inputs.controller
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta: float):
     # Update direction of slide stopper ray cast.
     stopper_ray_cast.cast_to.x = (
         abs(stopper_ray_cast.cast_to.x) * sign(get_facing_direction().x))
@@ -58,14 +58,14 @@ func _physics_process(delta: float) -> void:
     if can_double_jump and is_on_floor():
         has_in_air_jump = true
 
-func on_restarted() -> void:
+func on_restarted():
     visible = false
 
-func on_ready() -> void:
+func on_ready():
     hit_points = Constants.HIT_POINTS_MAX
     $StateMachine.initialize($StateMachine.start_state)
 
-func on_camera_transition_start() -> void:
+func on_camera_transition_start():
     _animation_player.pause_mode = PAUSE_MODE_PROCESS
     if is_climbing:
         _animation_player.play("climb_move")
@@ -73,25 +73,25 @@ func on_camera_transition_start() -> void:
         emit_signal("change_state", "move")
         _animation_player.play("move")
 
-func on_camera_transition_end() -> void:
+func on_camera_transition_end():
     _animation_player.pause_mode = PAUSE_MODE_INHERIT
     if not is_climbing and not is_sliding and is_on_floor():
         emit_signal("change_state", "idle")
 
-func on_boss_entered() -> void:
+func on_boss_entered():
     if is_on_floor():
         emit_signal("change_state", "idle")
     else:
         emit_signal("change_state", "jump")
 
-func on_boss_died() -> void:
+func on_boss_died():
     is_invincible = true
     $Inputs.controller = InputHandler.Controller.EMPTY
 
-func on_stage_cleared() -> void:
+func on_stage_cleared():
     $"Cutscenes/StageClear".start()
 
-func on_hit(damage: int) -> void:
+func on_hit(damage: int):
     if not is_invincible:
         is_invincible = true
         _take_damage(damage)
@@ -99,51 +99,51 @@ func on_hit(damage: int) -> void:
             emit_signal("change_state", "stagger")
             get_node("SFX/Hit").play()
 
-func heal(life_energy: int) -> void:
+func heal(life_energy: int):
     hit_points = clamp(hit_points + life_energy, 0, Constants.HIT_POINTS_MAX)
     emit_signal("hit_points_changed", hit_points)
 
-func charge_weapon(weapon_energy: int) -> void:
+func charge_weapon(weapon_energy: int):
     if $Weapons.current_state.has_method("charge_energy"):
         $Weapons.current_state.charge_energy(weapon_energy)
 
-func change_weapon(weapon_name: String) -> void:
+func change_weapon(weapon_name: String):
     $Weapons.change_weapon(weapon_name)
 
-func get_weapons_info() -> Dictionary:
+func get_weapons_info():
     return $Weapons.get_weapons_info()
 
-func get_current_weapon_name() -> String:
+func get_current_weapon_name():
     return $Weapons.current_state.weapon_name
 
-func die(explode: bool = true) -> void:
+func die(explode: bool = true):
     if not is_dead:
         explode_on_death = explode
         emit_signal("hit_points_changed", 0)
         emit_signal("change_state", "death")
         emit_signal("died")
 
-func set_facing_direction(value: Vector2) -> void:
+func set_facing_direction(value: Vector2):
     if value == Vector2.RIGHT:
         $Sprite.flip_h = false
     elif value == Vector2.LEFT:
         $Sprite.flip_h = true
 
-func get_facing_direction() -> Vector2:
+func get_facing_direction():
     return Vector2.LEFT if $Sprite.flip_h else Vector2.RIGHT
 
-func toggle_flip_h() -> void:
+func toggle_flip_h():
     $Sprite.flip_h = !$Sprite.flip_h
 
-func climb(correction_distance: Vector2) -> void:
+func climb(correction_distance: Vector2):
     move_and_collide(correction_distance)
     emit_signal("change_state", "climb")
 
-func stop_climb() -> void:
+func stop_climb():
     if is_climbing:
         emit_signal("change_state", "idle")
 
-func check_for_space(dir: Vector2, transition_shape_extents: Vector2) -> bool:
+func check_for_space(dir: Vector2, transition_shape_extents: Vector2):
     var is_space_empty := true
     var player_extents: Vector2 = $CollisionShape2D.shape.extents
     var cast_to_temp: Vector2 = _ray_cast.cast_to
@@ -164,31 +164,31 @@ func check_for_space(dir: Vector2, transition_shape_extents: Vector2) -> bool:
     _ray_cast.cast_to = cast_to_temp
     return is_space_empty
 
-func swap_color(main: Color, secondary: Color) -> void:
+func swap_color(main: Color, secondary: Color):
     $Sprite.material.set_shader_param("replace_0", main)
     $Sprite.material.set_shader_param("replace_1", secondary)
     $Sprite.use_parent_material = false
 
-func reset_color() -> void:
+func reset_color():
     $Sprite.use_parent_material = true
 
-func play_special_animation(anim_name: String) -> void:
+func play_special_animation(anim_name: String):
     $"SpriteMask/AnimationSpecialEffects".play(anim_name)
     $SpriteMask.material.set_shader_param("enabled", true)
     $SpriteMask.visible = true
 
-func stop_special_animation() -> void:
+func stop_special_animation():
     $"SpriteMask/AnimationSpecialEffects".stop()
     $SpriteMask.material.set_shader_param("enabled", false)
     $SpriteMask.visible = false
 
-func _take_damage(damage: int) -> void:
+func _take_damage(damage: int):
     hit_points -= damage * damage_multiplier
     emit_signal("hit_points_changed", hit_points)
     if hit_points < 1:
         die()
 
-func _get_charge_level() -> int:
+func _get_charge_level():
     var level: int = 0
     if charge_duration > Constants.CHARGE_DURATION_LVL1:
         level += 1

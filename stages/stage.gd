@@ -42,12 +42,12 @@ signal player_ready()
 signal player_died()
 signal stage_cleared()
 
-func _init() -> void:
+func _init():
     pause_mode = PAUSE_MODE_STOP
     start_dir = Vector2.RIGHT
     stage_exited = false
 
-func _ready() -> void:
+func _ready():
     for child in get_children():
         if child is Player:
             players[child.player_number] = child as Player
@@ -66,7 +66,7 @@ func _ready() -> void:
     get_tree().call_group("Enemies", "_replace_with_spawner")
     _restart()
 
-func _get_configuration_warning() -> String:
+func _get_configuration_warning():
     if not player:
         return "This stage has no Player. Consider adding a Player node to have a controllable character."
     if not get_current_camera():
@@ -76,7 +76,7 @@ func _get_configuration_warning() -> String:
 
 # Returns the first Camera2D found in the stage. Should not be used in _ready() callbacks,
 # since some nodes' _ready() callbacks are called before the camera is instantiated.
-func get_current_camera() -> Camera2D:
+func get_current_camera():
     # Search stage nodes.
     if not current_camera:
         for child in get_children():
@@ -95,7 +95,7 @@ func get_current_camera() -> Camera2D:
         printerr("No camera found in current stage.")
     return current_camera
 
-func _restart() -> void:
+func _restart():
     restarting = true
     Global.can_toggle_pause = true
     get_tree().paused = true
@@ -115,7 +115,7 @@ func _restart() -> void:
 
     restarting = false
 
-func _on_died() -> void:
+func _on_died():
     for p in players.values():
         if not p.is_dead:
             return
@@ -123,16 +123,16 @@ func _on_died() -> void:
     yield(get_tree().create_timer(DEATH_DELAY), "timeout")
     emit_signal("player_died")
 
-func _on_boss_died() -> void:
+func _on_boss_died():
     Global.can_toggle_pause = false
     yield(get_tree().create_timer(1.0 if OS.is_debug_build() else STAGE_CLEAR_DELAY), "timeout")
     emit_signal("stage_cleared")
 
-func _on_stage_exited() -> void:
+func _on_stage_exited():
     stage_exited = true
     _gui_fade_effects.fade_out(FADE_OUT_DURATION)
 
-func _on_screen_faded_out() -> void:
+func _on_screen_faded_out():
     yield(get_tree().create_timer(BLACK_SCREEN_DELAY), "timeout")
     if stage_exited:
         _game_over()
@@ -142,11 +142,11 @@ func _on_screen_faded_out() -> void:
         GameState.extra_life_count -= 1
         _restart()
 
-func _game_over() -> void:
+func _game_over():
     GameState.reset()
     _gui_game_over.show_game_over()
 
-func _set_stage_start_pos() -> void:
+func _set_stage_start_pos():
     if not player:
         return
     
@@ -159,7 +159,7 @@ func _set_stage_start_pos() -> void:
 
     player.set_facing_direction(start_dir)
 
-func _connect_signals() -> void:
+func _connect_signals():
     # Connect various stage signals to children methods.
     for p in players.values():
         _try_connect(self, "restarted", p, "on_restarted")
@@ -202,7 +202,7 @@ func _connect_signals() -> void:
     _try_connect(GameState, "energy_tank_count_changed", _gui_pause, "on_energy_tank_count_changed")
 
 func _try_connect(source: Object, signal_name: String, target: Object, method_name: String,
-        binds: Array = [], flags: int = 0) -> bool:
+        binds: Array = [], flags: int = 0):
     var error_msg := "%s: Tried to connect %s signal of source to %s method of target." % [self.name, signal_name, method_name]
     if not source:
         printerr(error_msg, " Source does not exist.")
@@ -221,7 +221,7 @@ func _try_connect(source: Object, signal_name: String, target: Object, method_na
 
 # Iterate all tile types and place instant death areas at their positions
 # if their names contain one of the instant death identifiers.
-func _add_instant_death_areas() -> void:
+func _add_instant_death_areas():
     var instant_death_areas_node := Node2D.new()
     instant_death_areas_node.name = "InstantDeathAreas"
     add_child(instant_death_areas_node)
@@ -242,7 +242,7 @@ func _add_instant_death_areas() -> void:
 
 # Iterate all tile types and place ladder areas at their positions
 # if their names contain the ladder identifier.
-func _add_ladder_areas() -> void:
+func _add_ladder_areas():
     var ladder_node := Node2D.new()
     ladder_node.name = "Ladders"
     add_child(ladder_node)
@@ -268,7 +268,7 @@ func _add_ladder_areas() -> void:
 # Returns a ladder node constructed from first set of contiguous ladder tiles
 # in array of grid based ladder tile positions. Removes the used ladder
 # position elements from the array.
-func _construct_ladder(ladder_tiles: Array) -> Node:
+func _construct_ladder(ladder_tiles: Array):
     if not ladder_tiles or ladder_tiles.size() == 0:
         printerr("Cannot construct ladder. Ladder tiles array is empty or null.")
         return null
@@ -292,7 +292,7 @@ func _construct_ladder(ladder_tiles: Array) -> Node:
     return ladder_area
 
 # Sort tiles in ascending order, where y -> inner and x -> outer.
-func _sort_ladder_tiles(item_1: Vector2, item_2: Vector2) -> bool:
+func _sort_ladder_tiles(item_1: Vector2, item_2: Vector2):
     if item_1.x < item_2.x:
         return true
     elif item_1.x > item_2.x:

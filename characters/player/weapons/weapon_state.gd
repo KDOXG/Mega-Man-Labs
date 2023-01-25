@@ -14,10 +14,10 @@ onready var charge_sound: AudioStreamPlayer = get_node("../../SFX/ChargeWeapon")
 onready var state_machine: Node = get_node("../../StateMachine")
 onready var inputs: InputHandler = get_node("../../Inputs")
 
-func _get_weapon_energy() -> int:
+func _get_weapon_energy():
     return weapon_energy
 
-func _enter() -> void:
+func _enter():
     owner.swap_color(color_primary, color_secondary)
     owner.emit_signal("weapon_changed", weapon_energy, color_primary)
 
@@ -27,7 +27,7 @@ func _enter() -> void:
         charge_sound.stop()
         owner.stop_special_animation()
 
-func _update(delta: float) -> void:
+func _update(delta: float):
     if not owner.can_charge_weapon:
         return
 
@@ -57,7 +57,7 @@ func _update(delta: float) -> void:
 
     _charge_playback_position = 0.0
 
-func _deplete_energy() -> bool:
+func _deplete_energy():
     if weapon_energy - energy_cost < 0:
         return false
     else:
@@ -65,6 +65,6 @@ func _deplete_energy() -> bool:
         owner.emit_signal("weapon_energy_changed", weapon_energy)
         return true
 
-func charge_energy(amount: int) -> void:
+func charge_energy(amount: int):
     weapon_energy = clamp(weapon_energy + amount, 0, Constants.HIT_POINTS_MAX)
     owner.emit_signal("weapon_energy_changed", weapon_energy)

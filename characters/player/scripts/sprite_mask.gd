@@ -37,11 +37,11 @@ var _mask_textures: Dictionary = {
 
 onready var _sprite: Sprite = $"../Sprite"
 
-func _ready() -> void:
+func _ready():
     if Global.lighting_vfx:
         modulate = Color(1.1, 1.1, 1.1, 1)
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(_delta: float):
     position = _sprite.position
     offset = _sprite.offset
     flip_h = _sprite.flip_h

@@ -2,7 +2,7 @@ extends "common.gd"
 
 const FREEZE_TIME: float = 0.33  # Seconds
 
-func _enter() -> void:
+func _enter():
     # Stop state machine
     get_parent().set_active(false)
     owner.is_dead = true
@@ -24,5 +24,5 @@ func _enter() -> void:
     if owner.explode_on_death:
         explode()
 
-func explode() -> void:
+func explode():
     $"../../EffectSpawner".spawn_death_particles()

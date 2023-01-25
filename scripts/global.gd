@@ -23,7 +23,7 @@ var use_touch_controls: bool setget , _get_use_touch_controls
 
 signal internal_res_changed()
 
-func _ready() -> void:
+func _ready():
     rng.randomize()
 
     # Last child of root is always main scene
@@ -33,7 +33,7 @@ func _ready() -> void:
     # Hide mouse
     Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 
-func get_current_stage() -> Stage:
+func get_current_stage():
     if main_scene is Stage:
         return main_scene as Stage
     elif "current_scene" in main_scene and main_scene.current_scene is Stage:
@@ -42,13 +42,13 @@ func get_current_stage() -> Stage:
         printerr("Could not get current stage because currently no stage is loaded.")
         return null
 
-func get_player() -> Player:
+func get_player():
     return get_current_stage().player
 
-func get_players() -> Dictionary:
+func get_players():
     return get_current_stage().players
 
-func get_players_alive_count() -> int:
+func get_players_alive_count():
     var count: int = 0
     for p in get_current_stage().players.values():
         if not p.is_dead:
@@ -56,7 +56,7 @@ func get_players_alive_count() -> int:
 
     return count
 
-func take_screenshot() -> void:
+func take_screenshot():
     var dir: Directory = Directory.new()
     if not dir.dir_exists(SCREENSHOT_PATH):
         dir.make_dir(SCREENSHOT_PATH)
@@ -80,7 +80,7 @@ func take_screenshot() -> void:
     image.flip_y()
     image.save_png(screenshot_filename)
 
-func is_action_pressed(action: String) -> bool:
+func is_action_pressed(action: String):
     # Temporary workaround until the following engine issue will be fixed.
     # https://github.com/godotengine/godot/issues/45628
 
@@ -108,7 +108,7 @@ func is_action_pressed(action: String) -> bool:
 
     return is_pressed
 
-func get_action_strength(action: String) -> float:
+func get_action_strength(action: String):
     # Temporary workaround until the following engine issue will be fixed.
     # https://github.com/godotengine/godot/issues/45628
     
@@ -118,27 +118,27 @@ func get_action_strength(action: String) -> float:
     
     return action_strength
 
-func get_base_size() -> Vector2:
+func get_base_size():
     if wide_screen:
         return Vector2(Constants.WIDTH_WIDE, Constants.HEIGHT_WIDE)
     else:
         return Vector2(Constants.WIDTH, Constants.HEIGHT)
 
-func get_walk_speed() -> float:
+func get_walk_speed():
     if wide_screen:
         return Constants.WALK_SPEED_WIDE
     else:
         return Constants.WALK_SPEED
 
-func get_projectile_speed() -> float:
+func get_projectile_speed():
     if wide_screen:
         return Constants.PROJECTILE_SPEED_WIDE
     else:
         return Constants.PROJECTILE_SPEED
 
-func set_wide_screen(value: bool) -> void:
+func set_wide_screen(value: bool):
     wide_screen = value
     emit_signal("internal_res_changed")
 
-func _get_use_touch_controls() -> bool:
+func _get_use_touch_controls():
     return ProjectSettings.get_setting("custom/gui/touch_controls")

@@ -3,7 +3,7 @@ extends State
 const SHOOT_DELAY: float = 0.3
 const Bullet: Resource = preload("EnemyMetallBullet.tscn")
 
-func _enter() -> void:
+func _enter():
     owner.is_blocking = false
     $"../../EnemyAnimations".play("shoot")
     yield(owner.start_yield_timer(SHOOT_DELAY), "timeout")
@@ -27,13 +27,13 @@ func _enter() -> void:
     bullet.direction = Vector2.UP + owner.get_facing_direction()
     Global.get_current_stage().add_child(bullet)
 
-func _update(delta: float) -> void:
+func _update(delta: float):
     get_parent().velocity.y = \
         clamp(get_parent().velocity.y + Constants.GRAVITY, -Constants.FALL_SPEED_MAX, Constants.FALL_SPEED_MAX)
     owner.move_and_slide(get_parent().velocity, Vector2.UP)
     if owner.is_on_floor():
         get_parent().velocity = Vector2.ZERO
 
-func _on_animation_finished(anim_name: String) -> void:
+func _on_animation_finished(anim_name: String):
     if anim_name == "shoot":
         emit_signal("finished", "idle")

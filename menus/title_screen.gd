@@ -5,12 +5,12 @@ var new_game_button: Button
 var options_button: Button
 var exit_button: Button
 
-func _ready() -> void:
+func _ready():
     _create_main_buttons()
     if not OS.is_debug_build():
         $TitleMusic.play()
 
-func _input(event: InputEvent) -> void:
+func _input(event: InputEvent):
     if (event is InputEventJoypadButton
         or event is InputEventKey or
         event is InputEventMouseButton) and not event.pressed:
@@ -18,12 +18,12 @@ func _input(event: InputEvent) -> void:
         $"VBoxContainer/Buttons".remove_child($"VBoxContainer/Buttons/StartLabel")
         _show_main_buttons()
     
-func _show_main_buttons() -> void:
+func _show_main_buttons():
     for button in main_buttons:
         $"VBoxContainer/Buttons".add_child(button)
     new_game_button.grab_focus()
 
-func _new_game() -> void:
+func _new_game():
     for button in $"VBoxContainer/Buttons".get_children():
         button.disabled = true
     $TitleMusic.stop()
@@ -33,17 +33,17 @@ func _new_game() -> void:
     yield($FadeEffects, "screen_faded_out")
     Global.main_scene.switch_scene("res://menus/stage_select/StageSelect.tscn")
 
-func _options() -> void:
+func _options():
     $SelectSound.play()
 
-func _exit() -> void:
+func _exit():
     exit_button.disconnect("focus_entered", self, "_on_focus_entered")
     exit_button.release_focus()
     $SelectSound.play()
     yield($SelectSound, "finished")
     get_tree().quit()
 
-func _on_focus_entered(button: Button) -> void:
+func _on_focus_entered(button: Button):
     if button: # Handle mouse/touch.
         if button.has_focus():
             return
@@ -52,7 +52,7 @@ func _on_focus_entered(button: Button) -> void:
 
     $MoveCursorSound.play()
 
-func _create_main_buttons() -> void:
+func _create_main_buttons():
     new_game_button = _create_button("New Game", "_new_game")
     main_buttons.push_back(new_game_button)
     options_button = _create_button("Options", "_options")
@@ -60,7 +60,7 @@ func _create_main_buttons() -> void:
     exit_button = _create_button("Exit", "_exit")
     main_buttons.push_back(exit_button)
 
-func _create_button(text: String, callback: String) -> Button:
+func _create_button(text: String, callback: String):
     var button := Button.new()
     button.text = text
     button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER

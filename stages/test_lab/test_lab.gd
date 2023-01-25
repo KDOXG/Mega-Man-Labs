@@ -16,7 +16,7 @@ func _notification(what):
             _boss_door_left = $"BossDoors/BossDoor02"
             _boss_door_right = $"BossDoors/BossDoor03"
 
-func _connect_signals() -> void:
+func _connect_signals():
     ._connect_signals()
 
     # Music

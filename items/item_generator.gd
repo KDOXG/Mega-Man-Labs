@@ -23,7 +23,7 @@ export(int, 0, 9999) var weight_energy_tank := 1
 
 var _accumulated_weight: int
 
-func drop_item() -> void:
+func drop_item():
     var item_drop = _roll_item()
 
     if item_drop:
@@ -31,7 +31,7 @@ func drop_item() -> void:
         item_drop.global_position = global_position
         Global.get_current_stage().add_child(item_drop)
 
-func _roll_item() -> Node:
+func _roll_item():
     var total_weight: int = (
         weight_no_drop
         + weight_life_energy_small

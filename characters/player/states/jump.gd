@@ -7,10 +7,10 @@ var velocity := Vector2()
 
 onready var landing_sound_effect: AudioStreamPlayer = owner.get_node("SFX/Land")
 
-func preset(velocity_start: Vector2) -> void:
+func preset(velocity_start: Vector2):
     _velocity_init = velocity_start
 
-func _enter() -> void:
+func _enter():
     animation_player.play("jump")
     velocity = _velocity_init
     _velocity_init = Vector2()
@@ -21,7 +21,7 @@ func _enter() -> void:
         # Not sure why a second gravity frame delay is necessary to reach 3 tiles high.
         velocity.y = JUMP_SPEED - owner.gravity * 2
 
-func _handle_command(command: String) -> void:
+func _handle_command(command: String):
     if command == "jump_stop" and velocity.y < 0:
         velocity.y = 0
 
@@ -35,7 +35,7 @@ func _handle_command(command: String) -> void:
     if command.begins_with("weapon_"):
         weapons.change_weapon(command)
 
-func _update(delta: float) -> void:
+func _update(delta: float):
     if owner.charge_level > 0 and not inputs.is_action_pressed(InputHandler.Action.SHOOT):
         _handle_command("shoot")
 

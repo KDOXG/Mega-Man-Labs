@@ -8,17 +8,17 @@ var last_shooting_direction: Vector2
 
 onready var collision_shape: CollisionShape2D = get_node("../../CollisionShape2D")
 
-func _enter() -> void:
+func _enter():
     last_shooting_direction = owner.get_facing_direction()
     animation_player.play("climb_idle")
     owner.is_climbing = true
 
-func _exit() -> void:
+func _exit():
     _is_move_anim = false
     owner.is_climbing = false
     update_sprite_direction(direction if direction.x != 0 else last_shooting_direction)
 
-func _handle_command(command: String) -> void:
+func _handle_command(command: String):
     if command == "shoot":
         emit_signal("finished", "climb_shoot")
     if command == "drop_down":
@@ -26,7 +26,7 @@ func _handle_command(command: String) -> void:
     if command.begins_with("weapon_"):
         weapons.change_weapon(command)
 
-func _update(delta: float) -> void:
+func _update(delta: float):
     direction = get_input_direction()
     if direction.y != 0:
         if owner.ladder.is_exiting_ladder(owner):

@@ -18,7 +18,7 @@ onready var _focus_frame := $FocusFrame
 signal game_paused()
 signal game_resumed()
 
-func _ready() -> void:
+func _ready():
     _tween.connect("tween_completed", self, "_on_tween_completed")
     _energy_tank_button.connect("button_up", self, "use_energy_tank")
     _energy_tank_button.connect("focus_entered", self, "_on_focus_entered",
@@ -33,14 +33,14 @@ func _ready() -> void:
         weapon_button.connect(
             "button_up", self, "_on_weapon_button_pressed", [weapon_button.get_parent().bar_name])
 
-func _input(event: InputEvent) -> void:
+func _input(event: InputEvent):
     if event.is_action_pressed("action_pause") and Global.can_toggle_pause:
         if not get_tree().paused and not Global.in_pause_menu:
             pause_game()
         elif Global.in_pause_menu:
             resume_game()
 
-func pause_game() -> void:
+func pause_game():
     if not _can_pause:
         return
 
@@ -59,7 +59,7 @@ func pause_game() -> void:
     _set_button_focus()
     _first_focus = false
 
-func resume_game() -> void:
+func resume_game():
     $WeaponMenuSound.play()
     _first_focus = true
     emit_signal("game_resumed")
@@ -74,7 +74,7 @@ func resume_game() -> void:
 func set_can_pause(value):
     _can_pause = value
 
-func _update_weapon_bars() -> void:
+func _update_weapon_bars():
     if _bars_node_path.empty():
         return
 
@@ -87,7 +87,7 @@ func _update_weapon_bars() -> void:
         else:
             bar.visible = false
 
-func _get_weapon_buttons() -> void:
+func _get_weapon_buttons():
     _weapon_buttons.clear()
     for bar in get_node(_bars_node_path).get_children():
         for child in  bar.get_children():
@@ -95,7 +95,7 @@ func _get_weapon_buttons() -> void:
                 _weapon_buttons.append(child)
                 break
 
-func _set_button_focus() -> void:
+func _set_button_focus():
     var current_weapon_name: String = Global.player.get_current_weapon_name()
     for button in _weapon_buttons:
         if button.get_parent().bar_name == current_weapon_name:
@@ -104,33 +104,33 @@ func _set_button_focus() -> void:
             return
     _energy_tank_button.grab_focus()
 
-func use_energy_tank() -> void:
+func use_energy_tank():
     if Global.player and GameState.energy_tank_count > 0 and \
             Global.player.hit_points < Constants.HIT_POINTS_MAX:
         GameState.energy_tank_count -= 1
         Global.player.heal(Constants.HIT_POINTS_MAX)
         get_node(_bars_node_path).get_children()[0].update_gradual(Constants.HIT_POINTS_MAX)
 
-func on_extra_life_count_changed(value: int) -> void:
+func on_extra_life_count_changed(value: int):
     $"Menu/LifeContainer/LifeLabel".text = str(" 0", value, " /09")
 
-func on_energy_tank_count_changed(value: int) -> void:
+func on_energy_tank_count_changed(value: int):
     $"Menu/EnergyTankContainer/EnergyTankLabel".text = str(" 0", value, " /09")
 
-func _on_tween_completed(object: Object, key: String) -> void:
+func _on_tween_completed(object: Object, key: String):
     if not Global.in_pause_menu:
         _pause_shader.visible = false
 
-func _on_focus_entered(rect_global_pos: Vector2) -> void:
+func _on_focus_entered(rect_global_pos: Vector2):
     _focus_frame.rect_global_position = rect_global_pos
     _focus_frame.visible = true
 
-func _on_focus_exited() -> void:
+func _on_focus_exited():
     _focus_frame.visible = false
     if not _first_focus:
         $MoveCursorSound.play()
 
-func _on_weapon_button_pressed(bar_name: String) -> void:
+func _on_weapon_button_pressed(bar_name: String):
     if Global.player.get_current_weapon_name() != bar_name:
         $SelectSound.play()
         $ButtonHighlight.rect_position = _focus_frame.rect_position

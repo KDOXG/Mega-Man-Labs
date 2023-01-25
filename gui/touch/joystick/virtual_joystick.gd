@@ -41,13 +41,13 @@ export var action_down := "ui_down"
 # If the joystick is receiving inputs.
 var _pressed := false setget , is_pressed
 
-func is_pressed() -> bool:
+func is_pressed():
     return _pressed
 
 # The joystick output.
 var _output := Vector2.ZERO setget , get_output
 
-func get_output() -> Vector2:
+func get_output():
     return _output
 
 #### PRIVATE VARIABLES ####
@@ -66,11 +66,11 @@ onready var _default_color : Color = _tip.modulate
 
 #### FUNCTIONS ####
 
-func _ready() -> void:
+func _ready():
     if not OS.has_touchscreen_ui_hint() and visibility_mode == VisibilityMode.TOUCHSCREEN_ONLY:
         hide()
 
-func _input(event: InputEvent) -> void:
+func _input(event: InputEvent):
     if event is InputEventScreenTouch:
         if event.pressed:
             if _is_point_inside_joystick_area(event.position) and _touch_index == -1:
@@ -89,18 +89,18 @@ func _input(event: InputEvent) -> void:
             _update_joystick(event.position)
             get_tree().set_input_as_handled()
 
-func _move_base(new_position: Vector2) -> void:
+func _move_base(new_position: Vector2):
     _base.rect_global_position = new_position - _base.rect_pivot_offset * get_global_transform_with_canvas().get_scale()
 
-func _move_tip(new_position: Vector2) -> void:
+func _move_tip(new_position: Vector2):
     _tip.rect_global_position = new_position - _tip.rect_pivot_offset * _base.get_global_transform_with_canvas().get_scale()
 
-func _is_point_inside_joystick_area(point: Vector2) -> bool:
+func _is_point_inside_joystick_area(point: Vector2):
     var x: bool = point.x >= rect_global_position.x and point.x <= rect_global_position.x + (rect_size.x * get_global_transform_with_canvas().get_scale().x)
     var y: bool = point.y >= rect_global_position.y and point.y <= rect_global_position.y + (rect_size.y * get_global_transform_with_canvas().get_scale().y)
     return x and y
 
-func _is_point_inside_base(point: Vector2) -> bool:
+func _is_point_inside_base(point: Vector2):
     var center : Vector2 = _base.rect_global_position + _base_radius
     var vector : Vector2 = point - center
     if vector.length_squared() <= _base_radius.x * _base_radius.x:
@@ -108,7 +108,7 @@ func _is_point_inside_base(point: Vector2) -> bool:
     else:
         return false
 
-func _update_joystick(touch_position: Vector2) -> void:
+func _update_joystick(touch_position: Vector2):
     var center : Vector2 = _base.rect_global_position + _base_radius
     var vector : Vector2 = touch_position - center
     vector = vector.limit_length(clampzone_size)

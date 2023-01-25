@@ -8,7 +8,7 @@ var _blocks: Array = []
 var _current_index: int = 0
 var _active := true
 
-func _ready() -> void:
+func _ready():
     _update_blocks_array()
 
     $Timer.connect("timeout", self, "_change_blocks")
@@ -16,24 +16,24 @@ func _ready() -> void:
     if not Engine.editor_hint:
         _show_indices(false)
 
-func _get_configuration_warning() -> String:
+func _get_configuration_warning():
     if _blocks.empty():
         return "Add Appearing Blocks for this Node to work properly."
     else:
         return ""
 
-func set_active() -> void:
+func set_active():
     if not _active:
         _active = true
         _current_index = 0
         $Timer.start()
 
-func set_inactive() -> void:
+func set_inactive():
     if _active:
         _active = false
         $Timer.stop()
 
-func _change_blocks() -> void:
+func _change_blocks():
     var play_sound := false
     var any_block_on_screen := false
 
@@ -57,13 +57,13 @@ func _change_blocks() -> void:
     else:
         _current_index = 1
 
-func _show_indices(value: bool) -> void:
+func _show_indices(value: bool):
     _update_blocks_array()
     show_indices = value
     for block in _blocks:
         block.show_index = value
 
-func _update_blocks_array() -> void:
+func _update_blocks_array():
     for child in get_children():
         if child is AppearingBlock:
             _blocks.append(child)

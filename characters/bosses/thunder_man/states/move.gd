@@ -8,12 +8,12 @@ const FALL_SPEED_MAX: float = 420.0
 var distance_traveled: Array
 var last_pos: Vector2
 
-func _enter() -> void:
+func _enter():
     animated_sprite.play("idle")
     distance_traveled = [1, 1, 1]
     last_pos = owner.global_position
 
-func _update(delta: float) -> void:
+func _update(delta: float):
     if owner.is_on_floor():
         animated_sprite.play("idle")
 

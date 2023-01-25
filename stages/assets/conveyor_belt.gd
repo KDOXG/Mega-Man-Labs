@@ -6,26 +6,26 @@ export(String, "Left", "Right") var direction := "Left" setget _set_direction
 export(int, 4, 24) var size := 8 setget _change_size
 export(bool) var active := true setget _set_active
 
-func _ready() -> void:
+func _ready():
     _update()
 
-func _set_velocity(value: int) -> void:
+func _set_velocity(value: int):
     velocity = value
     _update()
 
-func _set_direction(value: String) -> void:
+func _set_direction(value: String):
     direction = value
     _update()
 
-func _set_active(value: bool) -> void:
+func _set_active(value: bool):
     active = value
     _update()
 
-func _change_size(value: int) -> void:
+func _change_size(value: int):
     size = value
     _update()
 
-func _update() -> void:
+func _update():
     if not has_node("CollisionShape2D"):
         return
 

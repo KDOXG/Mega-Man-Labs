@@ -4,12 +4,12 @@ var _lifetime: float = -1.0
 var direction: Vector2
 var velocity: int
 
-func initialize(pos: Vector2, dir: Vector2, velo: int) -> void:
+func initialize(pos: Vector2, dir: Vector2, velo: int):
     global_position = pos
     direction = dir
     velocity = velo
 
-func _ready() -> void:
+func _ready():
     $VisibilityNotifier2D.connect("screen_exited", self, "_on_screen_exited")
 
     if Global.lighting_vfx:
@@ -21,14 +21,14 @@ func _ready() -> void:
     if _lifetime > 0:
         $Timer.start(_lifetime)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta: float):
     position += direction.normalized() * velocity * delta
 
-func set_lifetime(length: float) -> void:
+func set_lifetime(length: float):
     _lifetime = length
 
-func _on_screen_exited() -> void:
+func _on_screen_exited():
     queue_free()
 
-func _on_timeout() -> void:
+func _on_timeout():
     queue_free()

@@ -7,11 +7,11 @@ var _rotating_left: bool
 onready var _animations: AnimationPlayer = $"../../EnemyAnimations"
 onready var _inputs: InputHandler = $"../../Inputs"
 
-func _enter() -> void:
+func _enter():
     _animations.play("rotate")
     _rotating_left = true
 
-func _update(delta: float) -> void:
+func _update(delta: float):
     var direction: Vector2 = _inputs.get_input_direction()
     
     if direction.x >= 0 and _rotating_left:

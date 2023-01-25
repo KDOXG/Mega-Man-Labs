@@ -14,7 +14,7 @@ extents = Vector2( 192, 120 )
 script/source = "tool
 extends Node2D
 
-func _draw() -> void:
+func _draw():
     if not Engine.editor_hint:
         return
 

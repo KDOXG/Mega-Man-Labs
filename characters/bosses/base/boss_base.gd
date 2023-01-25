@@ -21,13 +21,13 @@ signal hit_points_changed(_hit_points)
 signal boss_ready()
 signal boss_died()
 
-func _ready() -> void:
+func _ready():
     connect("change_state", $StateMachine, "_change_state")
     connect("hit_points_changed", life_bar, "on_hit_points_changed")
     $Area2D.connect("body_entered", self, "_on_hit")
     _start_pos = global_position
 
-func reset() -> void:
+func reset():
     is_restarting = true
     emit_signal("change_state", "await")
     $StateMachine.set_active(false)
@@ -44,18 +44,18 @@ func reset() -> void:
     _animated_sprite.flip_h = false
     _animated_sprite.position = Vector2(0, -256)
 
-func on_boss_entered() -> void:
+func on_boss_entered():
     if Global.player is Player and abs(global_position.x - Global.player.global_position.x) < _base_width / 2:
         _switch_side()
     $StateMachine.initialize($"StateMachine/Ready".get_path())
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta: float):
     if $Area2D:
         for body in $Area2D.get_overlapping_bodies():
             if body is Player and _is_collidable:
                 body.on_hit(contact_damage)
 
-func _on_hit(body: PhysicsBody2D) -> void:
+func _on_hit(body: PhysicsBody2D):
     if is_invincible:
         return
 
@@ -69,13 +69,13 @@ func _on_hit(body: PhysicsBody2D) -> void:
             $AnimationHit.play("hit")
             _take_damage(buster_damage)
 
-func _take_damage(damage: int) -> void:
+func _take_damage(damage: int):
     _hit_points -= damage
     emit_signal("hit_points_changed", _hit_points)
     if _hit_points < 1:
         die()
 
-func _switch_side() -> void:
+func _switch_side():
     global_position.x -= (global_position - \
             Global.get_current_stage().get_current_camera().get_camera_screen_center()).x * 2
     if get_facing_direction() == Vector2.RIGHT:
@@ -83,15 +83,15 @@ func _switch_side() -> void:
     else:
         set_facing_direction(Vector2.RIGHT)
 
-func die() -> void:
+func die():
     is_dead = true
     visible = false
     _is_collidable = false
     emit_signal("change_state", "death")
     emit_signal("boss_died")
 
-func set_facing_direction(dir: Vector2) -> void:
+func set_facing_direction(dir: Vector2):
     _animated_sprite.flip_h = true if dir == Vector2.RIGHT else false
 
-func get_facing_direction() -> Vector2:
+func get_facing_direction():
     return Vector2.RIGHT if _animated_sprite.flip_h else Vector2.LEFT
